@@ -15,6 +15,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+
+
+    unsigned int threads;
+    unsigned int markerSize;
+    unsigned int iterations;
     
     QWidget *widget;
     QGridLayout mainLayout;
@@ -29,8 +34,14 @@ public:
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
     void initializeWidgets();
+
+public slots:
+
+    void setThreads(int);
+    void setMarkerSize(int);
+    void setIterations(int);
+
 
 
 
