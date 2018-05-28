@@ -4,7 +4,7 @@
 #include <QGridLayout>
 #include <QMainWindow>
 #include <QLabel>
-
+#include <QPushButton>
 
 namespace Ui {
 class MainWindow;
@@ -20,9 +20,13 @@ public:
     unsigned int threads;
     unsigned int markerSize;
     unsigned int iterations;
-    
+    QString filePath;
+
     QWidget *widget;
     QGridLayout mainLayout;
+
+    QPushButton FileSelect;
+    QPushButton Start;
     QSpinBox QnumberOfThreads;
     QSpinBox QnumberOfIterations;
     QSpinBox QmarkerSize;
@@ -35,14 +39,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void initializeWidgets();
+    void setFilePath(QString);
 
 public slots:
 
     void setThreads(int);
     void setMarkerSize(int);
     void setIterations(int);
-
-
+    void SelectFile();
 
 
 private:

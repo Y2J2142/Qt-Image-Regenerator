@@ -3,6 +3,7 @@
 #include <utility>
 #include <iostream>
 #include <QSpinBox>
+#include <QFileDialog>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -33,6 +34,16 @@ void MainWindow::setMarkerSize(int markerSize)
     this->markerSize = markerSize;
 }
 
+void MainWindow::setFilePath(QString path)
+{
+    this->filePath = path;
+}
+
+void MainWindow::SelectFile()
+{
+    this->filePath = QFileDialog::getOpenFileName(nullptr, "Open", "");
+}
+
 void MainWindow::initializeWidgets()
 {
     threads = 0;
@@ -42,9 +53,14 @@ void MainWindow::initializeWidgets()
     QObject::connect(&QnumberOfThreads, SIGNAL(valueChanged(int)), this, SLOT(setThreads(int)));
     QObject::connect(&QnumberOfIterations, SIGNAL(valueChanged(int)), this, SLOT(setIterations(int)));
     QObject::connect(&QmarkerSize, SIGNAL(valueChanged(int)), this, SLOT(setMarkerSize(int)));
+    QObject::connect(&FileSelect, SIGNAL(clicked(bool)), this, SLOT(SelectFile()));
+
     threadsLabel.setText(QString("Number of threads :"));
     iterationsLabel.setText(QString("Number of Iterations :"));
     markerSizeLabel.setText(QString("Circle size :"));
+
+    Start.setText(QString("Start!"));
+    FileSelect.setText(QString("Select file"));
 
     widget = new QWidget;
     mainLayout.addWidget(&threadsLabel,0,0);
@@ -53,7 +69,8 @@ void MainWindow::initializeWidgets()
     mainLayout.addWidget(&QnumberOfIterations,1,1);
     mainLayout.addWidget(&markerSizeLabel,2,0);
     mainLayout.addWidget(&QmarkerSize,2,1);
-
+    mainLayout.addWidget(&FileSelect, 3, 0);
+    mainLayout.addWidget(&Start, 3, 1);
     
     widget->setLayout(&mainLayout);
     this->setCentralWidget(widget);
