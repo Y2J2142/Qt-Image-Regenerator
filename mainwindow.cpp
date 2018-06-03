@@ -4,7 +4,9 @@
 #include <iostream>
 #include <QSpinBox>
 #include <QFileDialog>
-
+#include <img_generator.hpp>
+#include <vector>
+#include <future>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,6 +46,24 @@ void MainWindow::SelectFile()
     this->filePath = QFileDialog::getOpenFileName(nullptr, "Open", "");
 }
 
+
+void MainWindow::remakeImage()
+{
+        Mat src;
+        src = imread(filePath.toStdString(),CV_LOAD_IMAGE_COLOR);
+        Mat output(src.rows, src.cols, CV_8UC3, Scalar(255,255,255));
+
+        std::vector<std::future<void>> futures;
+        for(int i = 0 ; i < threads; i++)
+        {
+            futures.emplace_back( std::async(std::launch::async, generate, src, output, iterations/threads, markerSize, i*src.cols/threads, (i+1)*src.cols/threads));
+        }
+
+        for( auto &f : futures )
+            f.get();
+        imwrite(std::string("new.jpg") , output);
+}
+
 void MainWindow::initializeWidgets()
 {
     threads = 0;
@@ -62,6 +82,7 @@ void MainWindow::initializeWidgets()
     QObject::connect(&QnumberOfIterations, SIGNAL(valueChanged(int)), this, SLOT(setIterations(int)));
     QObject::connect(&QmarkerSize, SIGNAL(valueChanged(int)), this, SLOT(setMarkerSize(int)));
     QObject::connect(&FileSelect, SIGNAL(clicked(bool)), this, SLOT(SelectFile()));
+    QObject::connect(&Start, SIGNAL(clicked(bool)), this, SLOT(remakeImage()));
     threadsLabel.setText(QString("Number of threads :"));
     iterationsLabel.setText(QString("Number of Iterations :"));
     markerSizeLabel.setText(QString("Circle size :"));
@@ -82,6 +103,3 @@ void MainWindow::initializeWidgets()
     widget->setLayout(&mainLayout);
     this->setCentralWidget(widget);
 }
-
-
-

@@ -47,6 +47,7 @@ public slots:
     void setMarkerSize(int);
     void setIterations(int);
     void SelectFile();
+    void remakeImage();
 
 
 private:
