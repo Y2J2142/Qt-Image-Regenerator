@@ -50,11 +50,18 @@ void MainWindow::initializeWidgets()
     iterations = 0;
     markerSize = 0;
 
+    QnumberOfIterations.setKeyboardTracking(true);
+    QnumberOfThreads.setKeyboardTracking(true);
+    QmarkerSize.setKeyboardTracking(true);
+
+    QnumberOfIterations.setMaximum(200000000);
+    QnumberOfThreads.setMaximum(256);
+    QmarkerSize.setMaximum(200);
+
     QObject::connect(&QnumberOfThreads, SIGNAL(valueChanged(int)), this, SLOT(setThreads(int)));
     QObject::connect(&QnumberOfIterations, SIGNAL(valueChanged(int)), this, SLOT(setIterations(int)));
     QObject::connect(&QmarkerSize, SIGNAL(valueChanged(int)), this, SLOT(setMarkerSize(int)));
     QObject::connect(&FileSelect, SIGNAL(clicked(bool)), this, SLOT(SelectFile()));
-
     threadsLabel.setText(QString("Number of threads :"));
     iterationsLabel.setText(QString("Number of Iterations :"));
     markerSizeLabel.setText(QString("Circle size :"));
