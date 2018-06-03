@@ -4,6 +4,7 @@
 #include <iostream>
 #include <QSpinBox>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <img_generator.hpp>
 #include <vector>
 #include <future>
@@ -62,6 +63,10 @@ void MainWindow::remakeImage()
         for( auto &f : futures )
             f.get();
         imwrite(std::string("new.jpg") , output);
+        QMessageBox::information(
+            this,
+            tr(""),
+            tr("Done!") );
 }
 
 void MainWindow::initializeWidgets()
