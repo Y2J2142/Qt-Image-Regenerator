@@ -5,7 +5,9 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QPushButton>
-
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QImage>
 namespace Ui {
 class MainWindow;
 }
@@ -35,6 +37,10 @@ public:
     QLabel iterationsLabel;
     QLabel markerSizeLabel;
 
+    QImage image;
+
+    QGraphicsScene scene;
+    QGraphicsView view;
 
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();

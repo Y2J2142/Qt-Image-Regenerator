@@ -104,6 +104,7 @@ void MainWindow::initializeWidgets()
     mainLayout.addWidget(&QmarkerSize,2,1);
     mainLayout.addWidget(&FileSelect, 3, 0);
     mainLayout.addWidget(&Start, 3, 1);
+    mainLayout.addWidget(&view, 0, 2, 4, 1, Qt::AlignCenter);
     
     widget->setLayout(&mainLayout);
     this->setCentralWidget(widget);
