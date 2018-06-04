@@ -8,6 +8,6 @@
 #include <atomic>
 using namespace cv;
 
-void generate(Mat, Mat, int, int, int, int);
+void generate(Mat, Mat, int, int, int, int, RNG&);
 
 

@@ -1,11 +1,9 @@
 #include "img_generator.hpp"
 
-void generate(Mat src, Mat dst, int limit, int size, int range_begin, int range_end)
+void generate(Mat src, Mat dst, int limit, int size, int range_begin, int range_end, RNG& rng)
  {
     Mat img1(src.size().height, src.size().width, CV_8UC3, Scalar(255,255,255));
     Mat img2(src.size().height, src.size().width, CV_8UC3, Scalar(255,255,255));
-
-    RNG rng(0xFFFFFFFF);
 
 
     for(auto i = 0; i<limit;i++)

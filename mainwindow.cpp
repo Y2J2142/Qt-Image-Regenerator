@@ -61,10 +61,11 @@ void MainWindow::remakeImage()
         src = imread(filePath.toStdString(),CV_LOAD_IMAGE_COLOR);
         Mat output(src.rows, src.cols, CV_8UC3, Scalar(255,255,255));
 
+        RNG rng(0xFFFFFFF);
         std::vector<std::future<void>> futures;
         for(int i = 0 ; i < threads; i++)
         {
-            futures.emplace_back( std::async(std::launch::async, generate, src, output, iterations/threads, markerSize, i*src.cols/threads, (i+1)*src.cols/threads));
+            futures.emplace_back( std::async(std::launch::async, generate, src, output, iterations/threads, markerSize, i*src.cols/threads, (i+1)*src.cols/threads, std::reference_wrapper<RNG>(rng)));
         }
 
         for( auto &f : futures )
