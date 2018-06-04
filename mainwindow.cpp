@@ -69,8 +69,9 @@ void MainWindow::remakeImage()
 
         for( auto &f : futures )
             f.get();
-        imwrite(std::string("new.jpg") , output);
-        image.load("new.jpg");
+
+        image = QImage((uchar*)output.data, output.cols, output.rows, output.step, QImage::Format_RGB888);
+
         pixMap = QPixmap::fromImage(image);
         pixMap = pixMap.scaledToHeight(view.height(), Qt::SmoothTransformation);
         scene.addPixmap(pixMap);
