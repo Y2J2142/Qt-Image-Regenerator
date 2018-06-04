@@ -8,6 +8,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QImage>
+#include <QPixmap>
 namespace Ui {
 class MainWindow;
 }
@@ -38,6 +39,7 @@ public:
     QLabel markerSizeLabel;
 
     QImage image;
+    QPixmap pixMap;
 
     QGraphicsScene scene;
     QGraphicsView view;
