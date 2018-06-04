@@ -11,6 +11,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    scene(this),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -45,6 +46,12 @@ void MainWindow::setFilePath(QString path)
 void MainWindow::SelectFile()
 {
     this->filePath = QFileDialog::getOpenFileName(nullptr, "Open", "");
+    image.load(filePath);
+    pixMap = QPixmap::fromImage(image);
+    pixMap = pixMap.scaledToHeight(view.height(), Qt::SmoothTransformation);
+    scene.addPixmap(pixMap);
+    view.fitInView(scene.sceneRect(),Qt::KeepAspectRatio);
+    view.setScene(&scene);
 }
 
 
@@ -63,10 +70,20 @@ void MainWindow::remakeImage()
         for( auto &f : futures )
             f.get();
         imwrite(std::string("new.jpg") , output);
+        image.load("new.jpg");
+        pixMap = QPixmap::fromImage(image);
+        pixMap = pixMap.scaledToHeight(view.height(), Qt::SmoothTransformation);
+        scene.addPixmap(pixMap);
+        view.fitInView(scene.sceneRect(),Qt::KeepAspectRatio);
+        view.setScene(&scene);
+
+
         QMessageBox::information(
             this,
             tr(""),
             tr("Done!") );
+
+
 }
 
 void MainWindow::initializeWidgets()
@@ -104,7 +121,7 @@ void MainWindow::initializeWidgets()
     mainLayout.addWidget(&QmarkerSize,2,1);
     mainLayout.addWidget(&FileSelect, 3, 0);
     mainLayout.addWidget(&Start, 3, 1);
-    mainLayout.addWidget(&view, 0, 2, 4, 1, Qt::AlignCenter);
+    mainLayout.addWidget(&view, 0, 2, 4, 1);
     
     widget->setLayout(&mainLayout);
     this->setCentralWidget(widget);
