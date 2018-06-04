@@ -80,12 +80,6 @@ void MainWindow::remakeImage()
         view.setScene(&scene);
 
 
-        QMessageBox::information(
-            this,
-            tr(""),
-            tr("Done!") );
-
-
 }
 
 void MainWindow::initializeWidgets()
