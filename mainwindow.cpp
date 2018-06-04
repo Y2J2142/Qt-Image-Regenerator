@@ -70,8 +70,9 @@ void MainWindow::remakeImage()
 
         for( auto &f : futures )
             f.get();
-
+        cvtColor(output, output, CV_BGR2RGB);
         image = QImage((uchar*)output.data, output.cols, output.rows, output.step, QImage::Format_RGB888);
+
 
         pixMap = QPixmap::fromImage(image);
         pixMap = pixMap.scaledToHeight(view.height(), Qt::SmoothTransformation);
