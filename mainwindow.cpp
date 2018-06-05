@@ -63,7 +63,7 @@ void MainWindow::remakeImage()
 
         RNG rng(0xFFFFFFF);
         std::vector<std::future<void>> futures;
-        for(int i = 0 ; i < threads; i++)
+        for(unsigned int i = 0 ; i < threads; i++)
         {
             futures.emplace_back( std::async(std::launch::async, generate, src, output, iterations/threads, markerSize, i*src.cols/threads, (i+1)*src.cols/threads, std::reference_wrapper<RNG>(rng)));
         }
