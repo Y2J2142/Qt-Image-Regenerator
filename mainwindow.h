@@ -9,6 +9,7 @@
 #include <QGraphicsView>
 #include <QImage>
 #include <QPixmap>
+#include <opencv2/core.hpp>
 namespace Ui {
 class MainWindow;
 }
@@ -30,6 +31,7 @@ public:
 
     QPushButton FileSelect;
     QPushButton Start;
+    QPushButton SaveImage;
     QSpinBox QnumberOfThreads;
     QSpinBox QnumberOfIterations;
     QSpinBox QmarkerSize;
@@ -38,6 +40,7 @@ public:
     QLabel iterationsLabel;
     QLabel markerSizeLabel;
 
+    cv::Mat mat;
     QImage image;
     QPixmap pixMap;
 
@@ -56,6 +59,7 @@ public slots:
     void setIterations(int);
     void SelectFile();
     void remakeImage();
+    void saveImage();
 
 
 private:
