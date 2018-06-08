@@ -57,28 +57,31 @@ void MainWindow::SelectFile()
 
 void MainWindow::remakeImage()
 {
-        Mat src;
-        src = imread(filePath.toStdString(),CV_LOAD_IMAGE_COLOR);
-        Mat output(src.rows, src.cols, CV_8UC3, Scalar(255,255,255));
+    if(filePath == "" || threads == 0 || iterationsLabel == 0 || markerSize == 0)
+        return;
 
-        RNG rng(0xFFFFFFF);
-        std::vector<std::future<void>> futures;
-        for(unsigned int i = 0 ; i < threads; i++)
-        {
-            futures.emplace_back( std::async(std::launch::async, generate, src, output, iterations/threads, markerSize, i*src.cols/threads, (i+1)*src.cols/threads, std::reference_wrapper<RNG>(rng)));
-        }
+    Mat src;
+    src = imread(filePath.toStdString(),CV_LOAD_IMAGE_COLOR);
+    Mat output(src.rows, src.cols, CV_8UC3, Scalar(255,255,255));
 
-        for( auto &f : futures )
-            f.get();
-        cvtColor(output, output, CV_BGR2RGB);
-        image = QImage((uchar*)output.data, output.cols, output.rows, output.step, QImage::Format_RGB888);
+    RNG rng(0xFFFFFFF);
+    std::vector<std::future<void>> futures;
+    for(unsigned int i = 0 ; i < threads; i++)
+    {
+        futures.emplace_back( std::async(std::launch::async, generate, src, output, iterations/threads, markerSize, i*src.cols/threads, (i+1)*src.cols/threads, std::reference_wrapper<RNG>(rng)));
+    }
+
+    for( auto &f : futures )
+        f.get();
+    cvtColor(output, output, CV_BGR2RGB);
+    image = QImage((uchar*)output.data, output.cols, output.rows, output.step, QImage::Format_RGB888);
 
 
-        pixMap = QPixmap::fromImage(image);
-        pixMap = pixMap.scaledToHeight(view.height(), Qt::SmoothTransformation);
-        scene.addPixmap(pixMap);
-        view.fitInView(scene.sceneRect(),Qt::KeepAspectRatio);
-        view.setScene(&scene);
+    pixMap = QPixmap::fromImage(image);
+    pixMap = pixMap.scaledToHeight(view.height(), Qt::SmoothTransformation);
+    scene.addPixmap(pixMap);
+    view.fitInView(scene.sceneRect(),Qt::KeepAspectRatio);
+    view.setScene(&scene);
 
 
 }
